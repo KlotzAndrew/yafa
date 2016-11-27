@@ -1,41 +1,49 @@
-# YFAPI
+# Yafa
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/YFAPI`. To experiment with that code, run `bin/console` for an interactive prompt.
+**Ya**hoo **F**inance **A**PI wrapper, fetch stock quotes and stock 
+chart data
 
-TODO: Delete this and the text above, and describe your gem
+### Setup
 
-## Installation
+Just install yafa or add it to your gemfile `gem 'yafa'`
 
-Add this line to your application's Gemfile:
+### Usage
+#### Quotes data
+
+Fetches the current/most recent stock quote:
 
 ```ruby
-gem 'YFAPI'
+tickers = ['GOOG']
+fetcher = StockQuotes.new(tickers)
+quotes  = fetcher.fetch
 ```
 
-And then execute:
+Tickers array takes up to 400 tickers at once
 
-    $ bundle
+#### Chart data
 
-Or install it yourself as:
+Fetches per-minute quotes for the last day, good for making charts of
+recent stock prices
 
-    $ gem install YFAPI
+```ruby
+ticker = 'GOOG'
+fetcher = StockChart.new(ticker)
+chart_data = fetcher.fetch
+```
 
-## Usage
+Fetches for a single ticker per request
 
-TODO: Write usage instructions here
+#### Historical Data
 
-## Development
+Coming soon...
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+### Worth knowing
+ * Yahoo Finance API sometimes goes down, so handle failed requests
+ * Stay under your Yahoo API request limit, something like 20k/day 
+ (based on IP address making the request)
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/YFAPI. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
+### Improvements
+ * Historical data api
+ * Config for fetcher (i.e. timeouts, query params)
+ * Option to replace Yahoo time and key formatting with a consistent 
+ format

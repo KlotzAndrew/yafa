@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary     = 'yahoo finance api'
   spec.description = 'wrapper for yahoo finance stock quotes and chart data'
-  spec.homepage    = ''
+  spec.homepage    = 'https://github.com/KlotzAndrew/yafa'
   spec.license     = 'MIT'
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
