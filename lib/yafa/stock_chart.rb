@@ -8,16 +8,16 @@ module Yafa
     READ_TIMEOUT    = 5
     DATA_SOURCE     = 'yahoo_chart_api'.freeze
 
-    def call(ticker)
-      get_bars_data(ticker)
+    def initialize(ticker)
+      @ticker = ticker
+    end
+
+    def fetch
+      quote_data = call_api @ticker
+      parse_quote quote_data
     end
 
     private
-
-    def get_bars_data(ticker)
-      quote_data = call_api ticker
-      parse_quote quote_data
-    end
 
     def call_api(ticker)
       url      = format_api_url ticker

@@ -8,13 +8,12 @@ module Yafa
         name                  = 'Alphabet Inc.'
         last_trade_price_only = '761.68'
 
-        quotes = StockQuotes.new.call tickers
+        fetcher = StockQuotes.new(tickers)
+        quotes  = fetcher.fetch
 
         assert_equal 1, quotes.count
-
-        quote = quotes.first
-        assert_equal name, quote['Name']
-        assert_equal last_trade_price_only, quote['LastTradePriceOnly']
+        assert_equal name, quotes.first['Name']
+        assert_equal last_trade_price_only, quotes.first['LastTradePriceOnly']
       end
     end
 
@@ -22,7 +21,8 @@ module Yafa
       VCR.use_cassette('yahoo_finance_api') do
         tickers = %w(GOOG YHOO)
 
-        quotes = StockQuotes.new.call tickers
+        fetcher = StockQuotes.new(tickers)
+        quotes  = fetcher.fetch
 
         assert_equal 2, quotes.count
         assert_equal 'Alphabet Inc.', quotes.first['Name']

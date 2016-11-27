@@ -13,18 +13,18 @@ module Yafa
     YAHOO_API_END   = '&format=json&diagnostics=true&env=store%3A%2F%2Fdatata'\
                         'bles.org%2Falltableswithkeys&callback='.freeze
 
-    def call(tickers)
-      fetch_quotes_from_api tickers
+    def initialize(tickers)
+      @tickers = tickers
     end
 
-    private
-
-    def fetch_quotes_from_api(tickers)
-      formatted_tickers = format_tickers tickers
+    def fetch
+      formatted_tickers = format_tickers @tickers
       quote_data        = call_api(formatted_tickers)
 
       format_quote_data(quote_data)
     end
+
+    private
 
     def call_api(yahoo_tickers)
       url      = format_api_url yahoo_tickers
