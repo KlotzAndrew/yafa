@@ -1,11 +1,7 @@
 require 'test_helper'
 
-class YFAPITest < Minitest::Test
+class YafaTest < Minitest::Test
   def test_that_it_has_a_version_number
-    refute_nil ::YFAPI::VERSION
-  end
-
-  def test_it_does_something_useful
-    assert false
+    refute_nil ::Yafa::VERSION
   end
 end
