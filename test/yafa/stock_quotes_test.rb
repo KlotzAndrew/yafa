@@ -4,21 +4,17 @@ module Yafa
   class StockQuotesTest < Minitest::Test
     def test_returns_stock_quotes
       VCR.use_cassette('yahoo_finance_api') do
-        tickers = ['GOOG']
-        expected_quote = {
-          name: 'Alphabet Inc.',
-          last_trade_price_only: '761.68'
-        }
+        tickers               = ['GOOG']
+        name                  = 'Alphabet Inc.'
+        last_trade_price_only = '761.68'
 
         quotes = StockQuotes.new.call tickers
 
         assert_equal 1, quotes.count
 
         quote = quotes.first
-        assert_equal expected_quote[:name],
-                     quote['Name']
-        assert_equal expected_quote[:last_trade_price_only],
-                     quote['LastTradePriceOnly']
+        assert_equal name, quote['Name']
+        assert_equal last_trade_price_only, quote['LastTradePriceOnly']
       end
     end
 
