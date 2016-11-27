@@ -4,11 +4,8 @@ require 'json'
 # inputs ["ticker1", "ticker2"], returns [{quote1_hash}, {quote2_hash}]
 module Yafa
   class StockQuotes
-    GENERAL_ERROR_MESSAGE = 'Unable to fetch latest quotes!'.freeze
-
     BATCHLIMIT_QUOTES = 400
     READ_TIMEOUT      = 10
-    DEFAULT_TIME_ZONE = 'Eastern Time (US & Canada)'.freeze
 
     YAHOO_API_START = 'https://query.yahooapis.com/'.freeze
     YAHOO_API_QUERY = 'v1/public/yql?q=SELECT * FROM yahoo.finance.quotes'\
@@ -55,44 +52,12 @@ module Yafa
 
     def format_quote_data(quote_data)
       response_data = parse_quote_json(quote_data)
-      response_data = wrap(response_data)
-
-      response_data.inject([]) do |stocks_array, stock_hash|
-        stocks_array << build_quote(stock_hash) unless stock_hash['Name'].nil?
-      end
+      wrap(response_data)
     end
 
     def parse_quote_json(message)
       response_data = JSON.parse(message)
       response_data['query']['results']['quote']
-    end
-
-    def build_quote(stock_hash)
-      {
-        symbol:                stock_hash['symbol'],
-        name:                  stock_hash['Name'],
-        last_trade_price_only: stock_hash['LastTradePriceOnly'],
-        stock_exchange:        stock_hash['StockExchange'],
-        last_trade_time:       format_last_trade_time(stock_hash)
-      }
-    end
-
-    def format_last_trade_time(stock_hash)
-      d_m_y    = format_month_day_year(stock_hash)
-      hrs_mins = format_hour_minute(stock_hash)
-      date     = "#{hrs_mins} #{d_m_y}"
-
-      # Time.use_zone(DEFAULT_TIME_ZONE) { Time.zone.parse(date) }.iso8601
-      date
-    end
-
-    def format_month_day_year(stock_hash)
-      m_d_y = stock_hash['LastTradeDate'].split('/')
-      [m_d_y[1], m_d_y[0], m_d_y[2]].join('/')
-    end
-
-    def format_hour_minute(stock_hash)
-      stock_hash['LastTradeWithTime'].split.first
     end
 
     def wrap(obj)

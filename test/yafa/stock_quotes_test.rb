@@ -7,8 +7,7 @@ module Yafa
         tickers = ['GOOG']
         expected_quote = {
           name: 'Alphabet Inc.',
-          last_trade_price_only: '761.68',
-          last_trade_time: '1:00pm 25/11/2016'
+          last_trade_price_only: '761.68'
         }
 
         quotes = StockQuotes.new.call tickers
@@ -17,11 +16,9 @@ module Yafa
 
         quote = quotes.first
         assert_equal expected_quote[:name],
-                     quote[:name]
-        assert_equal expected_quote[:last_trade_time],
-                     quote[:last_trade_time]
+                     quote['Name']
         assert_equal expected_quote[:last_trade_price_only],
-                     quote[:last_trade_price_only]
+                     quote['LastTradePriceOnly']
       end
     end
 
@@ -32,8 +29,8 @@ module Yafa
         quotes = StockQuotes.new.call tickers
 
         assert_equal 2, quotes.count
-        assert_equal 'Alphabet Inc.', quotes.first[:name]
-        assert_equal 'Yahoo! Inc.', quotes.last[:name]
+        assert_equal 'Alphabet Inc.', quotes.first['Name']
+        assert_equal 'Yahoo! Inc.', quotes.last['Name']
       end
     end
   end
